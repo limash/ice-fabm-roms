@@ -1,2 +1,4 @@
 python-fabm-build/
-
+*.h
+*.dat
+*.in
