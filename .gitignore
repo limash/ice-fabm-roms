@@ -1,4 +1,4 @@
 python-fabm-build/
-*.h
-*.dat
-*.in
+roms-fabm-build/
+local/
+gen-src/
