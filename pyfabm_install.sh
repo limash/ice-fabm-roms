@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python_fabm_src="/home/schmiak/src/fabm/src/drivers/python"
+python_fabm_src="../fabm/src/drivers/python"
 
 mkdir -p python-fabm-build
 rm -r python-fabm-build/* 2> /dev/null

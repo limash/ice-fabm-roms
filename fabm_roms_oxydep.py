@@ -44,16 +44,17 @@ reduced_DiaBio = 1     #1 to reduce the size of DiaBio2d and DiaBio3d by subsett
 model = pyfabm.Model(yamlfile)
 
 # Names of files to be produced by this script
-folder_name = "gen-src"
+folder_name = "data"
 os.makedirs(folder_name, exist_ok=True)
 os.system(f'rm -rf {folder_name}/*')
+os.system(f'cp fabm.yaml {folder_name}/')
 
-outfile1 = f'{folder_name}/rfabm_mod.h'
-outfile2 = f'{folder_name}/rfabm_inp.h'
-outfile3 = f'{folder_name}/rfabm_var.h'
+outfile1 = 'Src_modify/rfabm_mod.h'
+outfile2 = 'Src_modify/rfabm_inp.h'
+outfile3 = 'Src_modify/rfabm_var.h'
 outfile4 = f'{folder_name}/varinfo_a20_v3_fabm_oxydep.dat' #NOTE: Needs to be adapted to user's application
 outfile5 = f'{folder_name}/rfabm_a20_v3_oxydep.in' #NOTE: Needs to be adapted to user's application
-outfile6 = folder_name + '/' + yamlfile[:len(yamlfile)-5] + '.cdl'
+# outfile6 = folder_name + '/' + yamlfile[:len(yamlfile)-5] + '.cdl'
 
 nspace = 6
 lmax = 30   #lmax is maximum allowed character length for variable names (<=40)
@@ -1203,7 +1204,7 @@ with open(outfile5,'w') as f:
 
 
 ## Write fabm.cdl
-   os.system('python fabm_describe_model_pwa.py ' + yamlfile + ' > ' + outfile6)
+#   os.system('python fabm_describe_model_pwa.py ' + yamlfile + ' > ' + outfile6)
 
 
 
