@@ -44,7 +44,7 @@ reduced_DiaBio = 1     #1 to reduce the size of DiaBio2d and DiaBio3d by subsett
 model = pyfabm.Model(yamlfile)
 
 # Names of files to be produced by this script
-folder_name = "data"
+folder_name = "data_a20_oxydep"
 os.makedirs(folder_name, exist_ok=True)
 os.system(f'rm -rf {folder_name}/*')
 os.system(f'cp fabm.yaml {folder_name}/')

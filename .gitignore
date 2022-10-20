@@ -1,4 +1,8 @@
 python-fabm-build/
 roms-fabm-build/
+Build*
 local/
 data/
+oceanG
+*.nc
+
