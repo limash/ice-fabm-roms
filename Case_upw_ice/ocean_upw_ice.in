@@ -199,7 +199,7 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-      NTIMES == 1440
+      NTIMES == 1440  ! with dt=300 it is 5 days
           DT == 300.0d0
      NDTFAST == 30
 
@@ -842,7 +842,8 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
      APARNAM =  ROMS/External/s4dvar.in
      SPOSNAM =  ROMS/External/stations.in
      FPOSNAM =  ROMS/External/floats.in
-     BPARNAM =  ROMS/External/bio_Fennel.in
+     IPARNAM =  ice.in
+     BPARNAM =  nemuro.in
      SPARNAM =  ROMS/External/sediment.in
      USRNAME =  ROMS/External/MyFile.dat
 

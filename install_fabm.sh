@@ -2,16 +2,16 @@
 
 fabm_src="../fabm/src"
 
-mkdir -p roms-fabm-build
-rm -r roms-fabm-build/* 2> /dev/null
+mkdir -p Build_fabm
+rm -r Build_fabm/* 2> /dev/null
 
 # Compile, build, and install FABM with ROMS as a host
-cmake -S $fabm_src -B $PWD/roms-fabm-build \
+cmake -S $fabm_src -B $PWD/Build_fabm \
     -DFABM_HOST=roms \
     -DCMAKE_Fortran_COMPILER=gfortran \
     -DCMAKE_INSTALL_PREFIX=$HOME/.local
 
-cd roms-fabm-build
+cd Build_fabm
 make install
 cd ..
 
