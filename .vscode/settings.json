@@ -1,3 +1,8 @@
 {
+    "fortran.linter.includePaths": [
+        // "${workspaceFolder}/ROMS/Include/*.h", 
+        "${workspaceFolder}/Build_romsG/*.mod"
+    ],
+    "python.defaultInterpreterPath": "/home/schmiak/miniconda3/envs/roms/bin/python",
     "python.analysis.typeCheckingMode": "basic"
 }

@@ -102,13 +102,14 @@ done
 # determine the name of the ".h" header file with the application
 # CPP definitions.
 
-export   ROMS_APPLICATION=UPWELLING
+export   ROMS_APPLICATION=UPW_ICE
 
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
 
 export        MY_ROOT_DIR=${HOME}/src
 export     MY_PROJECT_DIR=${PWD}
+export MY_COMPILE_DIR=${MY_PROJECT_DIR}
 
 # The path to the user's local current ROMS source code.
 #
@@ -120,7 +121,9 @@ export     MY_PROJECT_DIR=${PWD}
 # machine. This script is designed to more easily allow for differing paths
 # to the code and inputs on differing machines.
 
- export       MY_ROMS_SRC=${MY_ROOT_DIR}/ROMS_v37_KATE
+export       MY_ROMS_SRC=${MY_PROJECT_DIR}/ROMS_v37_KATE
+
+NEW_SRC_DIR=${MY_ROMS_SRC}/ROMS/Nonlinear/Biology
 
 # Set path of the directory containing makefile configuration (*.mk) files.
 # The user has the option to specify a customized version of these files
@@ -130,6 +133,118 @@ export     MY_PROJECT_DIR=${PWD}
 
  export         COMPILERS=${MY_ROMS_SRC}/Compilers
 #export         COMPILERS=${HOME}/Compilers/ROMS
+
+# # Check if we have any modified source files
+
+if [ -s Src_modify ]; then
+    cd Src_modify/
+#    gotModifiedSource=`ls *.F *.h *.mk`
+    gotModifiedSource=`ls *.F *.h *.mk makefile`
+###Modified PWA 04/03/2015
+    cd ..
+fi
+
+# Replace the original files with the modifications
+if [ "$gotModifiedSource" != "" ]; then
+
+    # Copy locally modified source to main ROMS directory
+    for ModSrc_modify in $gotModifiedSource; do
+
+        # Check where original resides
+###PWA Modified 04/03/2015
+        #	origFile=`find $MY_ROMS_SRC -name $ModSrc_modify
+        if [ "$ModSrc_modify" == "makefile" ]; then
+        # For the makefile, consider only the makefile in $MY_ROMS_SRC (PWA)
+            echo "Copying makefile"
+            echo $ModSrc_modify
+            origFile=$MY_ROMS_SRC/makefile
+        else
+            origFile=`find $MY_ROMS_SRC -name $ModSrc_modify`
+            if [ "$origFile" != "" ]; then
+                echo "Found original file:"
+                echo $origFile
+            fi
+        fi
+###PWA Modified 04/03/2015
+
+        if [ -f "$origFile" ]; then
+
+            # Moving original and copying user-modifed source code
+            # first checking if the original already exists with
+            # the .orig extension
+            if [ ! -f "$origFile.orig" ]; then
+                mv $origFile $origFile.orig
+                echo "Moving $origFile to $origFile.orig"
+            fi
+
+            # Copying from local source directory to repository
+            cp Src_modify/$ModSrc_modify $origFile
+            echo "Copying Src_modify/$ModSrc_modify to $origFile"
+
+            if [ ! -f USER_MODIFIED_CODE_IN_REPO ]; then
+
+                # Touch file to notify that user modified code has been
+                # placed in the repository
+                touch USER_MODIFIED_CODE_IN_REPO
+
+            fi
+        else
+
+	    ##PWA changes
+
+        # No such file in repository, proceed to copy in new file (PWA)
+            cp Src_modify/$ModSrc_modify $NEW_SRC_DIR/.
+            echo "Copying Src_modify/$ModSrc_modify to $NEW_SRC_DIR"
+
+            if [ ! -f USER_MODIFIED_CODE_IN_REPO ]; then
+
+                # Touch file to notify that user modified code has been
+                # placed in the repository
+                touch USER_MODIFIED_CODE_IN_REPO
+
+            fi
+	    ##End of PWA changes
+        fi
+    done
+fi
+# Removing user modified source code in repository
+# KHC - 20110209
+# NMK - 2013
+rollback() {
+    cd $MY_COMPILE_DIR
+
+    if [ -f USER_MODIFIED_CODE_IN_REPO ]; then
+
+    # Find source code files with ".orig"-ending and
+    # remove ending
+        filelist=`find "$MY_ROMS_SRC" -name *.orig`
+
+        if [ "$filelist" != "" ]; then
+
+            for oldFileName in $filelist; do
+
+            # extract basename
+            newFileName=`basename $oldFileName .orig`
+            fileDirectory=`dirname $oldFileName`
+            mv $oldFileName  $fileDirectory/$newFileName
+
+            echo "Moved $oldFileName  to $fileDirectory/$newFileName"
+
+            done
+
+        else # Empty filelist, no such files in repository
+
+            echo "Did not find any .orig-files in the repository, empty file deleted"
+
+        fi
+
+        # Remove empty file
+
+        rm -f USER_MODIFIED_CODE_IN_REPO
+
+    fi
+}
+trap 'rollback; exit 99' 0
 
 #--------------------------------------------------------------------------
 # Set tunable CPP options.
@@ -226,7 +341,7 @@ fi
 # customized biology model header file (like fennel.h, nemuro.h, ecosim.h,
 # etc).
 
- export     MY_HEADER_DIR=${MY_PROJECT_DIR}/Include
+ export     MY_HEADER_DIR=${MY_ROMS_SRC}/Apps/Upw_ice
 
 #export MY_ANALYTICAL_DIR=${MY_PROJECT_DIR}
 
@@ -242,6 +357,13 @@ if [ -n "${USE_DEBUG:+1}" ]; then
 else
  export       SCRATCH_DIR=${MY_PROJECT_DIR}/Build_roms
 fi
+
+###PWA Inserted 04/03/2015
+export FABM_INCDIR=/home/schmiak/.local/include
+export FABM_LIBDIR=/home/schmiak/.local/lib
+#This defines the location of the FABM *.mod files and library,
+#for use in the makefile if needed.
+###PWA Inserted 04/03/2015
 
 # Go to the users source directory to compile. The options set above will
 # pick up the application-specific code from the appropriate place.
