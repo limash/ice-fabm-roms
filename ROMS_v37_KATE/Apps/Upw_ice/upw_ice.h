@@ -27,7 +27,8 @@
 #define MIX_S_TS
 
 #define BIOLOGY
-#define NEMURO
+#define RFABM
+#undef NEMURO
 
 #define SALINITY
 #define SOLVE3D
@@ -58,7 +59,7 @@
 #  undef ALBEDO_CLOUD
 #  undef ALBEDO_CURVE  /* for water */
 #  undef ICE_ALB_EC92  /* for ice */
-#  undef ALBEDO_CSIM   /* for ice */
+#  define ALBEDO_CSIM   /* for ice */
 #  undef ALBEDO_FILE  /* for both */
 #  undef LONGWAVE
 #  define ANA_PAIR
@@ -96,7 +97,7 @@
 #  undef  ICE_STRENGTH_QUAD
 #  define  ICE_ADVECT   /* Note that we need these two for the */
 #  define  ICE_SMOLAR   /* timestepping to work correctly.     */
-#  undef  ICE_UPWIND
+#  define  ICE_UPWIND
 #  define  ICE_BULK_FLUXES
 #  define ICE_CONVSNOW
 #  undef  MELT_PONDS
@@ -123,6 +124,29 @@
 #if defined NEMURO
 # define HOLLING_GRAZING
 # undef  IVLEV_EXPLICIT
+#endif
+
+/* FABM */
+#ifdef RFABM
+# define ANA_BIOLOGY
+# undef  OFFLINE_BIOLOGY
+# undef FABM_N3ATMDEPO      /* use to provide atmospheric deposition flux of oxidized nitrogen via ROMS (input N3atmd) */
+# undef FABM_N4ATMDEPO      /* use to provide atmospheric deposition flux of reduced nitrogen via ROMS (input N4atmd) */
+# undef FABM_AICE           /* use to provide fractional ice area from ROMS internal ice model */
+# undef FABM_NONNEG_S       /* use to cap salinity input to FABM at zero PSU */
+# undef FABM_CHECK_STATE    /* use to cap bgc variable input to FABM */
+# define MASKING             /* MUST BE DEFINED to provide input to fabm_set_mask */
+# define MASKFABM
+# define ANA_SPFLUX          /* use if analytical surface passive tracers fluxes - MUST BE DEFINED, or fluxes provided in forcing files, PWA 18/09/2015 */
+# define ANA_BPFLUX          /* use if analytical bottom passive tracers fluxes - MUST BE DEFINED, or fluxes provided in forcing files, PWA 18/09/2015 */
+# define ANA_SRFLUX
+# define SHORTWAVE           /* MUST BE DEFINED in order to provide light forcing for FABM model */
+# define FABM_INITIAL        /* use to set initial conditions to FABM default values */
+# undef FABM_INITIAL_SB     /* use to set initial conditions to FABM defaults only for surface/bottom attached variables */
+# undef FABM_PCO2ATM        /* use to provide atmospheric pCO2 forcing via ROMS (need to input xCO2) */
+# define DIAGNOSTICS         /* MUST be defined to output FABM diagnostics (specified in rfabm.in) */
+# define DIAGNOSTICS_BIO     /* MUST be defined to output FABM diagnostics (specified in rfabm.in) */
+# undef FABM_ADYTRACER      /* use to activate adg tracer */
 #endif
 
 #ifdef BIO_FENNEL

@@ -283,8 +283,8 @@ trap 'rollback; exit 99' 0
 
 #export        USE_OpenMP=on            # shared-memory parallelism
 
-#export              FORT=ifort
- export              FORT=gfortran
+ export              FORT=ifort
+#export              FORT=gfortran
 #export              FORT=pgi
 
  export         USE_DEBUG=on            # use Fortran debugging flags
