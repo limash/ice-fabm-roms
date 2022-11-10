@@ -1,8 +1,13 @@
 {
-    "fortran.linter.includePaths": [
-        // "${workspaceFolder}/ROMS/Include/*.h", 
-        "${workspaceFolder}/Build_romsG/*.mod"
+    "fortran.fortls.directories": [
+        "./Build_romsG/**",
     ],
-    "python.defaultInterpreterPath": "/home/schmiak/miniconda3/envs/roms/bin/python",
+    "fortran.linter.includePaths": [
+        "${workspaceFolder}/Build_romsG/*.mod",
+    ],
+    "fortran.linter.compiler": "ifort",
+    "fortran.linter.compilerPath": "/opt/intel/oneapi/compiler/2022.2.0/linux/bin/intel64/ifort",
+    //
+    // "python.defaultInterpreterPath": "/home/schmiak/miniconda3/envs/roms/bin/python",
     "python.analysis.typeCheckingMode": "basic"
 }
