@@ -4,10 +4,12 @@ Build*
 local/
 data/
 oceanG
+oceanS
 *.nc
 *.log
 makefile.*
 Ocean?
 .svn
 .*.swp
+rfabm.in
 

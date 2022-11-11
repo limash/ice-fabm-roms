@@ -2,7 +2,7 @@
 
 # This script creates model-dependent .h files, varinfo.dat, and rfabm.in
 #
-#Output files: to Src_modify: rfabm_mod.h, rfabm_inp.h, rfabm_var.h, 
+#Output files: to Src_modify: rfabm_mod.h, rfabm_inp.h, rfabm_var.h,
 #              to FOLDER_NAME: varinfo.dat, rfabm.in
 #
 # original author: Phil Wallhead
@@ -76,7 +76,7 @@ bc_forced = 'RadNud  Clo     RadNud  RadNud '
 bc_unforced = 'Gra     Clo     Gra     Gra    '
 isforced_bc = numpy.array([0]*NBT) #Test case, use gradient (unforced) BCs
 
-default_LtracerSrc = 1 #1 to use default LtracerSrc, 0 for no point sources
+default_LtracerSrc = 0 #1 to use default LtracerSrc, 0 for no point sources
 LtracerSrc = 'F F T F T F T F F F' #Default LtracerSrc [Oxy Phy NUT POM DOM Het MP_free MP_biof MP_het MP_det ]
 
 default_LtracerISrc = 0 #1 to use default LtracerISrc, 0 for no internal point sources
