@@ -12,4 +12,6 @@ Ocean?
 .svn
 .*.swp
 rfabm.in
-
+*.i
+*.mod
+*genmod*
